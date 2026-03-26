@@ -273,7 +273,7 @@ GET /health → {
 def get_health():
     for each instance:
         try:
-            GET /api/tags with 2s timeout
+            GET /api/tags with indefinite timeout
             if 200: instance_status = "healthy"
         except:
             instance_status = "error {code}"
@@ -301,12 +301,19 @@ def get_health():
 
 ### Timeouts
 
+All HTTP request timeouts are now configured to wait indefinitely:
+
 | Operation | Timeout | Rationale |
 |-----------|---------|-----------|
-| /api/tags check | 5s | Quick check |
-| /api/pull | 300s | Model download |
-| /api/generate | 300s | Generation time |
-| Other endpoints | 30s | Default |
+| /api/tags check | None | Wait for response |
+| /api/pull | None | Wait for model download to complete |
+| /api/generate | None | Wait for full generation completion |
+| Other endpoints | None | Wait until response or refusal |
+
+Failover is triggered only when:
+- Server returns HTTP 429, 403, 402, 500-505
+- Connection is actively refused
+- Network error occurs
 
 ## Security Model
 

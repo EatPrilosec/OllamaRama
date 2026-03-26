@@ -168,7 +168,8 @@ Response example:
 5. **Monitor response** → Check HTTP status code
    - ✅ 2xx: Success, return response to client
    - ❌ 429/403/402/500/502/503/504/505: Try next instance
-   - ⏱️ Timeout: Try next instance
+   - ⏰ Server actively refuses: Try next instance
+   - 📡 Connection error: Try next instance
 6. **Repeat** → Move to next instance in the chain
 7. **All failed** → Return 503 with error details
 
@@ -304,11 +305,11 @@ curl http://localhost:11434/api/tags | jq '.models'
 
 ### High latency
 ```bash
-# Reduce worker timeout for faster failover
-# In Dockerfile CMD: --timeout 30
-
 # Check instance health
 curl http://localhost:8000/health | jq
+
+# Note: Requests now wait indefinitely for responses
+# Failover only triggers on connection errors or HTTP error codes
 ```
 
 ### Memory issues

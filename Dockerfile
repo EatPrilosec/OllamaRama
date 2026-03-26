@@ -44,4 +44,4 @@ ENV PORT=8000
 ENV DEBUG=False
 
 # Run with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--worker-class", "sync", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--worker-class", "sync", "--timeout", "0", "--access-logfile", "-", "--error-logfile", "-", "app:app"]

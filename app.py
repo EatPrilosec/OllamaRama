@@ -98,7 +98,7 @@ def check_model_exists(base_url: str, model: str) -> bool:
     try:
         response = requests.get(
             urljoin(base_url, '/api/tags'),
-            timeout=5
+            timeout=None
         )
         if response.status_code == 200:
             models = response.json().get('models', [])
@@ -117,7 +117,7 @@ def pull_model(base_url: str, model: str) -> bool:
         response = requests.post(
             urljoin(base_url, '/api/pull'),
             json={'name': model},
-            timeout=300,  # 5 minute timeout for pulls
+            timeout=None,  # Indefinite timeout - wait until model is pulled
             stream=True
         )
         
@@ -184,27 +184,27 @@ def proxy_request(path: str, method: str = 'GET'):
                     response = requests.get(
                         url,
                         params=request.args,
-                        timeout=30,
+                        timeout=None,
                         stream=True
                     )
                 elif method == 'POST':
                     response = requests.post(
                         url,
                         json=data,
-                        timeout=300,  # Longer timeout for generation
+                        timeout=None,  # Indefinite timeout - wait for response
                         stream=True
                     )
                 elif method == 'PUT':
                     response = requests.put(
                         url,
                         json=data,
-                        timeout=30,
+                        timeout=None,
                         stream=True
                     )
                 elif method == 'DELETE':
                     response = requests.delete(
                         url,
-                        timeout=30
+                        timeout=None
                     )
                 else:
                     continue
@@ -274,7 +274,7 @@ def health():
     
     for instance in manager.get_all_instances():
         try:
-            response = requests.get(f"{instance}/api/tags", timeout=2)
+            response = requests.get(f"{instance}/api/tags", timeout=None)
             if response.status_code == 200:
                 healthy_instances += 1
                 instance_status[instance] = "healthy"

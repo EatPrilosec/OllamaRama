@@ -184,7 +184,8 @@ curl -X POST http://localhost:8000/api/pull \
 When an instance returns:
 - `2xx` → Success ✓
 - `429, 403, 402, 500, 502, 503, 504, 505` → Try next instance
-- Timeout → Try next instance
+- Connection refused → Try next instance
+- Network error → Try next instance
 - All failed → Return 503
 
 ## Health Check

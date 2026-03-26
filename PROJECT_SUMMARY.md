@@ -116,7 +116,7 @@ OLLAMA_PORTS=11434-11436 DEBUG=True python app.py
 - **Request Processing**: O(n) where n = number of instances
 - **Memory**: ~50MB base + request buffers
 - **CPU**: 4 Gunicorn workers by default
-- **Timeouts**: Model pull (300s), generation (300s), other (30s)
+- **Timeouts**: Indefinite - waits for response completion or refusal
 
 ### Supported Endpoints
 All Ollama API endpoints proxied:
