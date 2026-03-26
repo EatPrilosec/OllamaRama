@@ -1,0 +1,27 @@
+# docker-compose.override.yml
+# This file is used for local development overrides
+# Copy this to docker-compose.override.yml if you want to override settings
+# Note: docker-compose.override.yml is automatically merged with docker-compose.yml
+
+version: '3.8'
+
+services:
+  ollamarama:
+    # Enable debugging for development
+    environment:
+      - DEBUG=True
+    
+    # Mount source code for live reload (requires development setup)
+    volumes:
+      - .:/app
+    
+    # Use Flask development server instead of Gunicorn
+    # Uncomment to use:
+    # command: python app.py
+    
+    # Forward logs to console
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
